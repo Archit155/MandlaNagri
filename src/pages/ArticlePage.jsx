@@ -4,7 +4,7 @@ import TrendingItem from '../components/TrendingItem';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { ChevronRight, Calendar, User, Share2, Bookmark, MessageSquare, Mail, Edit, Trash2, AlertCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { fetchArticle, deleteArticle } from '../services/api';
+import { fetchArticle, deleteArticle, BASE_URL } from '../services/api';
 import { useTranslation } from 'react-i18next';
 import { useDynamicTranslate } from '../hooks/useDynamicTranslate';
 import toast from 'react-hot-toast';
@@ -147,7 +147,7 @@ const ArticlePage = () => {
         <div className="space-y-6 mb-16">
           <div className="relative aspect-[16/7] w-full rounded-card overflow-hidden shadow-2xl group border border-border">
             <img 
-              src={`http://localhost:5000${article.images[0]}`} 
+              src={`${BASE_URL}${article.images[0]}`} 
               alt={article.title} 
               className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
             />
@@ -158,7 +158,7 @@ const ArticlePage = () => {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 px-2">
               {article.images.slice(1).map((img, i) => (
                 <div key={i} className="aspect-[4/3] rounded-xl overflow-hidden border border-border shadow-md hover:scale-[1.03] transition-all cursor-zoom-in">
-                  <img src={`http://localhost:5000${img}`} alt={`Gallery ${i}`} className="w-full h-full object-cover" />
+                  <img src={`${BASE_URL}${img}`} alt={`Gallery ${i}`} className="w-full h-full object-cover" />
                 </div>
               ))}
             </div>

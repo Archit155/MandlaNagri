@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { BASE_URL } from '../services/api';
 import { X, Mail, Lock, User, Github, Chrome } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
@@ -33,7 +34,7 @@ const AuthModal = ({ isOpen, onClose, initialView, onLoginSuccess }) => {
       const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
       const body = isLogin ? { email, password } : { name, email, password };
       
-      const res = await fetch(`http://localhost:5000${endpoint}`, {
+      const res = await fetch(`${BASE_URL}${endpoint}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
