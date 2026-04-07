@@ -1,4 +1,5 @@
 const articleRepository = require('../repositories/ArticleRepository');
+const Category = require('../models/Category');
 
 class ArticleService {
   async getAllArticles(queryOptions) {
@@ -43,15 +44,39 @@ class ArticleService {
   }
 
   async createArticle(data, authorId) {
+    if (data.category) {
+      await this._ensureCategoryExists(data.category);
+    }
     return articleRepository.create({ ...data, author: authorId });
   }
 
   async updateArticle(id, data) {
+    if (data.category) {
+      await this._ensureCategoryExists(data.category);
+    }
     return articleRepository.update(id, data);
   }
 
   async deleteArticle(id) {
     return articleRepository.delete(id);
+  }
+
+  // Helper to find or create category case-insensitively
+  async _ensureCategoryExists(name) {
+    const trimmedName = name.trim();
+    if (!trimmedName) return;
+
+    // Capitalize first letter: "sports" -> "Sports"
+    const formattedName = trimmedName.charAt(0).toUpperCase() + trimmedName.slice(1);
+
+    const existing = await Category.findOne({ 
+      name: { $regex: new RegExp(`^${formattedName}$`, 'i') } 
+    });
+
+    if (!existing) {
+      await Category.create({ name: formattedName });
+      console.info(`🛠️  New category created: ${formattedName}`);
+    }
   }
 }
 

@@ -18,6 +18,17 @@ const EditArticlePage = () => {
   const [initialLoading, setInitialLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const [fieldErrors, setFieldErrors] = useState({});
+
+  const validateForm = () => {
+    const errors = {};
+    if (!title.trim()) errors.title = 'Headline is required';
+    if (!content.trim()) errors.content = 'Content is required';
+    if (!category.trim()) errors.category = 'Category is required';
+    
+    setFieldErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
 
   useEffect(() => {
     const loadArticle = async () => {
@@ -105,28 +116,43 @@ const EditArticlePage = () => {
 
       <form onSubmit={handleSubmit} className="space-y-6 bg-surface border border-border p-8 rounded-card shadow-lg">
         <div>
-          <label className="block text-xs font-black uppercase tracking-widest text-muted mb-2">Headline</label>
+          <div className="flex justify-between items-end mb-2">
+            <label className="block text-xs font-black uppercase tracking-widest text-muted">Headline</label>
+            {fieldErrors.title && <span className="text-[10px] text-red-500 font-bold uppercase animate-pulse">{fieldErrors.title}</span>}
+          </div>
           <input 
             type="text" 
             required 
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full bg-bg border border-border rounded-input py-3 px-4 focus:outline-none focus:ring-2 focus:ring-accent/20"
+            onChange={(e) => {
+              setTitle(e.target.value);
+              if (fieldErrors.title) setFieldErrors(prev => ({ ...prev, title: null }));
+            }}
+            className={`w-full bg-bg border ${fieldErrors.title ? 'border-red-500 ring-2 ring-red-500/10' : 'border-border'} rounded-input py-3 px-4 focus:outline-none focus:ring-2 focus:ring-accent/20 transition-all font-bold`}
           />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label className="block text-xs font-black uppercase tracking-widest text-muted mb-2">Category</label>
-            <select 
+            <div className="flex justify-between items-end mb-2">
+              <label className="block text-xs font-black uppercase tracking-widest text-muted">Category</label>
+              {fieldErrors.category && <span className="text-[10px] text-red-500 font-bold uppercase animate-pulse">Required</span>}
+            </div>
+            <input 
+              list="edit-category-list"
               value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className="w-full bg-bg border border-border rounded-input py-3 px-4 focus:outline-none focus:ring-2 focus:ring-accent/20"
-            >
+              onChange={(e) => {
+                setCategory(e.target.value);
+                if (fieldErrors.category) setFieldErrors(prev => ({ ...prev, category: null }));
+              }}
+              placeholder="e.g. Politics"
+              className={`w-full bg-bg border ${fieldErrors.category ? 'border-red-500 ring-2 ring-red-500/10' : 'border-border'} rounded-input py-3 px-4 focus:outline-none focus:ring-2 focus:ring-accent/20 transition-all font-bold`}
+            />
+            <datalist id="edit-category-list">
               {categories.map(cat => (
-                <option key={cat} value={cat}>{cat}</option>
+                <option key={cat} value={cat} />
               ))}
-            </select>
+            </datalist>
           </div>
           <div>
             <label className="block text-xs font-black uppercase tracking-widest text-muted mb-2">Feature Image URL</label>
@@ -140,13 +166,19 @@ const EditArticlePage = () => {
         </div>
 
         <div>
-          <label className="block text-xs font-black uppercase tracking-widest text-muted mb-2">Article Content</label>
+          <div className="flex justify-between items-end mb-2">
+            <label className="block text-xs font-black uppercase tracking-widest text-muted">Article Content</label>
+            {fieldErrors.content && <span className="text-[10px] text-red-500 font-bold uppercase animate-pulse">{fieldErrors.content}</span>}
+          </div>
           <textarea 
             required 
             value={content}
-            onChange={(e) => setContent(e.target.value)}
+            onChange={(e) => {
+              setContent(e.target.value);
+              if (fieldErrors.content) setFieldErrors(prev => ({ ...prev, content: null }));
+            }}
             rows={10}
-            className="w-full bg-bg border border-border rounded-input py-3 px-4 focus:outline-none focus:ring-2 focus:ring-accent/20 resize-y"
+            className={`w-full bg-bg border ${fieldErrors.content ? 'border-red-500 ring-2 ring-red-500/10' : 'border-border'} rounded-input py-3 px-4 focus:outline-none focus:ring-2 focus:ring-accent/20 resize-y font-medium text-text leading-relaxed`}
           />
         </div>
 

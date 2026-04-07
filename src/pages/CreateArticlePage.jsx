@@ -11,12 +11,9 @@ const CreateArticlePage = () => {
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [category, setCategory] = useState('');
-  const [categories, setCategories] = useState([]);
-  const [photos, setPhotos] = useState([]);
-  const [previews, setPreviews] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [fieldErrors, setFieldErrors] = useState({});
 
   useEffect(() => {
     fetchCategories().then(res => {
@@ -35,6 +32,16 @@ const CreateArticlePage = () => {
       setCategory('News');
     });
   }, []);
+
+  const validateForm = () => {
+    const errors = {};
+    if (!title.trim()) errors.title = 'Headline is required';
+    if (!content.trim()) errors.content = 'Article content is required';
+    if (!category.trim()) errors.category = 'Category is required';
+    
+    setFieldErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
 
   // Cleanup previews on unmount
   useEffect(() => {
@@ -65,13 +72,19 @@ const CreateArticlePage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!validateForm()) {
+      toast.error('Please fix the errors before publishing.');
+      return;
+    }
+
     setLoading(true);
     setError('');
 
     const formData = new FormData();
-    formData.append('title', title);
-    formData.append('content', content);
-    formData.append('category', category);
+    formData.append('title', title.trim());
+    formData.append('content', content.trim());
+    formData.append('category', category.trim());
     photos.forEach(file => {
       formData.append('photos', file);
     });
@@ -126,29 +139,44 @@ const CreateArticlePage = () => {
         </div>
 
         <div>
-          <label className="block text-xs font-black uppercase tracking-widest text-muted mb-3">Headline</label>
+          <div className="flex justify-between items-end mb-3">
+            <label className="block text-xs font-black uppercase tracking-widest text-muted">Headline</label>
+            {fieldErrors.title && <span className="text-[10px] text-red-500 font-bold uppercase animate-pulse">{fieldErrors.title}</span>}
+          </div>
           <input 
             type="text" 
             required 
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full bg-bg border border-border rounded-input py-4 px-5 focus:outline-none focus:ring-2 focus:ring-accent/20 transition-all font-bold text-lg"
+            onChange={(e) => {
+              setTitle(e.target.value);
+              if (fieldErrors.title) setFieldErrors(prev => ({ ...prev, title: null }));
+            }}
+            className={`w-full bg-bg border ${fieldErrors.title ? 'border-red-500 ring-2 ring-red-500/10' : 'border-border'} rounded-input py-4 px-5 focus:outline-none focus:ring-2 focus:ring-accent/20 transition-all font-bold text-lg`}
             placeholder="Enter an engaging title..."
           />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="md:col-span-1">
-            <label className="block text-xs font-black uppercase tracking-widest text-muted mb-3">Category</label>
-            <select 
+            <div className="flex justify-between items-end mb-3">
+              <label className="block text-xs font-black uppercase tracking-widest text-muted">Category</label>
+              {fieldErrors.category && <span className="text-[10px] text-red-500 font-bold uppercase animate-pulse">Required</span>}
+            </div>
+            <input 
+              list="category-list"
               value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className="w-full bg-bg border border-border rounded-input py-4 px-5 focus:outline-none focus:ring-2 focus:ring-accent/20 transition-all font-bold"
-            >
+              onChange={(e) => {
+                setCategory(e.target.value);
+                if (fieldErrors.category) setFieldErrors(prev => ({ ...prev, category: null }));
+              }}
+              placeholder="e.g. Politics"
+              className={`w-full bg-bg border ${fieldErrors.category ? 'border-red-500 ring-2 ring-red-500/10' : 'border-border'} rounded-input py-4 px-5 focus:outline-none focus:ring-2 focus:ring-accent/20 transition-all font-bold`}
+            />
+            <datalist id="category-list">
               {categories.map(cat => (
-                <option key={cat} value={cat}>{cat}</option>
+                <option key={cat} value={cat} />
               ))}
-            </select>
+            </datalist>
           </div>
           
           <div className="md:col-span-2">
@@ -197,13 +225,19 @@ const CreateArticlePage = () => {
         )}
 
         <div>
-          <label className="block text-xs font-black uppercase tracking-widest text-muted mb-3">Article Content</label>
+          <div className="flex justify-between items-end mb-3">
+            <label className="block text-xs font-black uppercase tracking-widest text-muted">Article Content</label>
+            {fieldErrors.content && <span className="text-[10px] text-red-500 font-bold uppercase animate-pulse">{fieldErrors.content}</span>}
+          </div>
           <textarea 
             required 
             value={content}
-            onChange={(e) => setContent(e.target.value)}
+            onChange={(e) => {
+              setContent(e.target.value);
+              if (fieldErrors.content) setFieldErrors(prev => ({ ...prev, content: null }));
+            }}
             rows={10}
-            className="w-full bg-bg border border-border rounded-input py-4 px-5 focus:outline-none focus:ring-2 focus:ring-accent/20 resize-y font-medium text-text leading-relaxed"
+            className={`w-full bg-bg border ${fieldErrors.content ? 'border-red-500 ring-2 ring-red-500/10' : 'border-border'} rounded-input py-4 px-5 focus:outline-none focus:ring-2 focus:ring-accent/20 resize-y font-medium text-text leading-relaxed`}
             placeholder="Write the full story here..."
           />
         </div>
