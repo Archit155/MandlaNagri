@@ -18,7 +18,7 @@ class UserRepository {
   }
 
   async updateRefreshTokens(userId, tokens) {
-    return User.findByIdAndUpdate(userId, { refreshTokens: tokens }, { new: true });
+    return User.findByIdAndUpdate(userId, { refreshTokens: tokens }, { returnDocument: 'after' });
   }
 
   async removeRefreshToken(userId, token) {

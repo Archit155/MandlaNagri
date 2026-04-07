@@ -23,7 +23,7 @@ class ArticleRepository {
 
   async update(id, updateData) {
     return Article.findByIdAndUpdate(id, updateData, {
-      new: true,
+      returnDocument: 'after',
       runValidators: true
     });
   }

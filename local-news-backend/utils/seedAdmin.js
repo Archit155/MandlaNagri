@@ -16,17 +16,16 @@ const seedAdmin = async () => {
 
   const existing = await User.findOne({ email });
   if (existing) {
-    console.info('✅  Admin user already exists');
+    console.info('✅  Admin user already exists. Updating password from env var for safety.');
+    existing.password = password; // pre-save hook will hash this plain text
+    await existing.save();
     return;
   }
-
-  const salt = await bcrypt.genSalt(10);
-  const hash = await bcrypt.hash(password, salt);
 
   const admin = new User({
     name: 'Site Administrator',
     email,
-    password: hash,
+    password, // pre-save hook will hash this plain text
     role: 'admin',
     googleId: null,
   });

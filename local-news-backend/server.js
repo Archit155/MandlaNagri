@@ -40,6 +40,8 @@ const app = express();
 
 // Fix Express 5 query parser read-only issue
 app.set('query parser', 'simple');
+// Trust Render's proxy for express-rate-limit to work correctly
+app.set('trust proxy', 1);
 
 // Middlewares
 const allowedOrigins = process.env.ALLOWED_ORIGINS 
