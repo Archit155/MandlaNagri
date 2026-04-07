@@ -19,6 +19,7 @@ const ArticlePage = () => {
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const { t } = useTranslation();
   const { translatedText: title } = useDynamicTranslate(article?.title);
@@ -44,18 +45,16 @@ const ArticlePage = () => {
   }, [id, t]);
 
   const handleDelete = async () => {
-    if (window.confirm(t('dashboard.signOutConfirm'))) {
-      try {
-        const res = await deleteArticle(id);
-        if (res.success) {
-          toast.success(t('dashboard.inviteSuccess'));
-          navigate('/');
-        } else {
-          toast.error(res.message);
-        }
-      } catch (err) {
-        toast.error(err.message);
+    try {
+      const res = await deleteArticle(id);
+      if (res.success) {
+        toast.success(t('article.deleteSuccess'));
+        navigate('/');
+      } else {
+        toast.error(res.message);
       }
+    } catch (err) {
+      toast.error(err.message);
     }
   };
 
@@ -78,20 +77,46 @@ const ArticlePage = () => {
   return (
     <article className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 animate-in slide-in-from-bottom duration-700">
       {/* Author/Admin Actions */}
-      {isAuthor && (
-        <div className="flex justify-end space-x-4 mb-4">
+        <div className="flex justify-end space-x-4 mb-4 relative">
           <Link to={`/edit-article/${article.id || article._id}`} className="flex items-center space-x-2 text-sm font-bold text-accent bg-accent/10 px-4 py-2 rounded-lg hover:bg-accent/20 transition-colors">
             <Edit className="h-4 w-4" />
             <span>{t('dashboard.writeArticle').split(' ')[0]}</span>
           </Link>
           {isAdmin && (
-            <button onClick={handleDelete} className="flex items-center space-x-2 text-sm font-bold text-red-500 bg-red-500/10 px-4 py-2 rounded-lg hover:bg-red-500/20 transition-colors">
-              <Trash2 className="h-4 w-4" />
-              <span>{t('dashboard.signOut').split(' ')[1] || 'Delete'}</span>
-            </button>
+            <div className="relative">
+              <button 
+                onClick={() => setShowDeleteConfirm(!showDeleteConfirm)} 
+                className={`flex items-center space-x-2 text-sm font-bold ${showDeleteConfirm ? 'text-white bg-red-600' : 'text-red-500 bg-red-500/10'} px-4 py-2 rounded-lg hover:bg-red-500/20 transition-all`}
+              >
+                <Trash2 className="h-4 w-4" />
+                <span>{t('article.delete')}</span>
+              </button>
+
+              {/* Custom Confirmation Popup */}
+              {showDeleteConfirm && (
+                <div className="absolute top-full right-0 mt-2 w-64 bg-surface border border-red-500/30 p-4 rounded-xl shadow-2xl z-50 animate-in fade-in slide-in-from-top-2">
+                  <p className="text-xs font-bold text-text mb-4 leading-relaxed">
+                    {t('article.deleteConfirm')}
+                  </p>
+                  <div className="flex space-x-2">
+                    <button 
+                      onClick={handleDelete}
+                      className="flex-1 bg-red-500 text-white py-2 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-red-600 transition-colors"
+                    >
+                      {t('article.delete')}
+                    </button>
+                    <button 
+                      onClick={() => setShowDeleteConfirm(false)}
+                      className="flex-1 bg-muted/10 text-muted py-2 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-muted/20 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           )}
         </div>
-      )}
       
       {/* Breadcrumbs */}
       <div className="flex items-center space-x-2 text-xs font-bold uppercase tracking-widest text-muted mb-8">

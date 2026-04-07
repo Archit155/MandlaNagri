@@ -59,7 +59,10 @@
     "subscribeDesc": "Curated local stories delivered to your inbox every morning at 7:00 AM. Join 25,000+ neighbors.",
     "signMeUp": "Sign Me Up",
     "backHome": "Back to Home",
-    "noStories": "No stories found."
+    "noStories": "No stories found.",
+    "delete": "Delete",
+    "deleteConfirm": "Are you sure you want to delete this article?",
+    "deleteSuccess": "Article deleted successfully!"
   },
   "auth": {
     "signIn": "Sign In",
