@@ -20,12 +20,20 @@ const CreateArticlePage = () => {
 
   useEffect(() => {
     fetchCategories().then(res => {
-      if (res.success) {
+      if (res.success && res.data.length > 0) {
         const cats = res.data.filter(c => c !== 'All');
         setCategories(cats);
+        // If the user hasn't selected anything yet, default to first category
         if (cats.length > 0) setCategory(cats[0]);
+      } else {
+        // Fallback for empty or failed fetch
+        setCategories(['News', 'Sports', 'Politics', 'Business', 'Lifestyle']);
+        setCategory('News');
       }
-    }).catch(console.error);
+    }).catch(() => {
+      setCategories(['News', 'Sports', 'Politics', 'Business', 'Lifestyle']);
+      setCategory('News');
+    });
   }, []);
 
   // Cleanup previews on unmount

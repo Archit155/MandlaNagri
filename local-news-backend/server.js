@@ -24,6 +24,7 @@ const fs = require('fs');
 
 const inviteRoutes = require('./routes/inviteRoutes');
 const seedAdmin = require('./utils/seedAdmin');
+const seedCategories = require('./utils/seedCategories');
 
 // Ensure uploads directory exists for static serving
 const uploadDir = path.join(__dirname, 'uploads');
@@ -31,9 +32,10 @@ if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir);
 }
 
-// Initialize database & seed admin
+// Initialize database & seed data
 connectDB().then(() => {
   seedAdmin().catch(err => console.error('Admin seed error:', err));
+  seedCategories().catch(err => console.error('Category seed error:', err));
 });
 
 const app = express();

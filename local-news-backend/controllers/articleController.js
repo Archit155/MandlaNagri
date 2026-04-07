@@ -23,6 +23,11 @@ exports.createArticle = catchAsync(async (req, res, next) => {
     data.images = req.files.map(file => `/uploads/${file.filename}`);
   }
   
+  // Ensure category exists
+  if (!data.category || data.category.trim() === '') {
+    data.category = 'News';
+  }
+
   delete data.image; // Remove old single image field if present
 
   const article = await articleService.createArticle(data, req.user.id);
