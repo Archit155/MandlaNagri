@@ -44,14 +44,25 @@ app.set('query parser', 'simple');
 app.set('trust proxy', 1);
 
 // Middlewares
-const allowedOrigins = process.env.ALLOWED_ORIGINS 
-  ? process.env.ALLOWED_ORIGINS.split(',') 
-  : ['http://localhost:3000', 'http://localhost:5173', 'http://localhost:5174'];
+const allowedOrigins = (process.env.ALLOWED_ORIGINS || '')
+  .split(',')
+  .map(origin => origin.trim().replace(/\/$/, '')) // Remove trailing underscores/slashes and whitespace
+  .filter(Boolean);
+
+if (allowedOrigins.length === 0) {
+  allowedOrigins.push('http://localhost:3000', 'http://localhost:5173', 'http://localhost:5174');
+}
 
 app.use(cors({
   origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl)
     if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
+    
+    // Normalize incoming origin for comparison
+    const normalizedOrigin = origin.replace(/\/$/, '');
+    
+    if (allowedOrigins.indexOf(normalizedOrigin) === -1) {
+      console.warn(`🛑 CORS Blocked: Origin "${origin}" not in ALLOWED_ORIGINS`);
       const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
       return callback(new Error(msg), false);
     }

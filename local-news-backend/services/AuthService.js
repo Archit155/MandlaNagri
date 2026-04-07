@@ -1,3 +1,4 @@
+const AppError = require('../utils/AppError');
 const jwt = require('jsonwebtoken');
 const userRepository = require('../repositories/UserRepository');
 const inviteRepository = require('../repositories/InviteRepository');
@@ -26,33 +27,25 @@ class AuthService {
     // Strong password validation regex
     const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (!strongPasswordRegex.test(password)) {
-      let err = new Error('Password must be strong (8+ chars, uppercase, lowercase, number, special character)');
-      err.statusCode = 400; // Using statusCode for global error handler compatibility
-      throw err;
+      throw new AppError('Password must be strong (8+ chars, uppercase, lowercase, number, special character)', 400);
     }
 
     let assignedRole = 'user'; 
 
     if (role === 'employee' || role === 'admin') {
       if (!inviteCode) {
-        let err = new Error('Invite code is required for elevated roles');
-        err.code = 'INVITE_REQUIRED';
-        throw err;
+        throw new AppError('Invite code is required for elevated roles', 400);
       }
       const invite = await inviteRepository.findByCode(inviteCode.toUpperCase());
       if (!invite || !invite.isValid()) {
-        let err = new Error('Invalid or expired invite code');
-        err.code = 'INVALID_INVITE';
-        throw err;
+        throw new AppError('Invalid or expired invite code', 400);
       }
       assignedRole = invite.role; // trust invite role over requested role
     }
 
     const existing = await userRepository.findByEmail(email);
     if (existing) {
-      let err = new Error('Email already exists');
-      err.code = 'DUPLICATE_EMAIL';
-      throw err;
+      throw new AppError('Email already exists', 400);
     }
 
     const user = await userRepository.create({ name, email, password, role: assignedRole });
@@ -71,9 +64,7 @@ class AuthService {
   async login(email, password) {
     const user = await userRepository.findByEmail(email, true);
     if (!user || !(await user.comparePassword(password, user.password))) {
-      let err = new Error('Incorrect email or password');
-      err.code = 'UNAUTHORIZED';
-      throw err;
+      throw new AppError('Incorrect email or password', 401);
     }
 
     const tokens = this.generateTokens(user);
@@ -88,10 +79,7 @@ class AuthService {
 
     const user = await userRepository.findByRefreshToken(token);
     if (!user) {
-      // Token reuse detection could go here (if user not found but token exists in a separate collection, or if we decode and clear all tokens to be safe)
-      let err = new Error('Invalid refresh token');
-      err.code = 'INVALID_REFRESH';
-      throw err;
+      throw new AppError('Invalid refresh token', 401);
     }
 
     try {
