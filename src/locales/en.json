@@ -1,0 +1,145 @@
+{
+  "nav": {
+    "home": "Home",
+    "search": "Search",
+    "join": "Join",
+    "create": "Create",
+    "categories": {
+      "all": "All",
+      "politics": "Politics",
+      "sports": "Sports",
+      "community": "Community",
+      "education": "Education",
+      "business": "Business",
+      "events": "Events",
+      "technology": "Technology",
+      "local": "Local"
+    },
+    "searchPlaceholder": "Search stories..."
+  },
+  "footer": {
+    "brandDesc": "Your primary source for hyper-local journalism, community stories, and real-time updates that matter to your neighborhood.",
+    "categories": "Categories",
+    "company": "Company",
+    "subscribe": "Subscribe",
+    "subscribeDesc": "Get the morning's top stories delivered to your inbox.",
+    "subscribePlaceholder": "email@example.com",
+    "subscribeDisclaimer": "By subscribing, you agree to our Terms and Privacy Policy.",
+    "copyright": "© 2026 LocalNewz Media Group Inc.",
+    "links": {
+      "about": "About Us",
+      "contact": "Contact",
+      "advertising": "Advertising",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service",
+      "accessibility": "Accessibility",
+      "ethics": "Ethics Policy",
+      "corrections": "Corrections"
+    }
+  },
+  "home": {
+    "latestNews": "Latest News",
+    "trending": "Trending",
+    "exploreMore": "Explore More Stories",
+    "loadMore": "Load More Stories",
+    "allCaughtUp": "You're all caught up!",
+    "stayRegular": "Stay Regular",
+    "subscribeDesc": "Never miss a community beat. Subscribe for weekly specials.",
+    "joinNewsletter": "Join Newsletter",
+    "exploreTopics": "Explore Topics",
+    "exploreTopicsDesc": "Dive deep into the specific categories that matter to your lifestyle and locality.",
+    "moreFromWire": "More From The Wire"
+  },
+  "article": {
+    "readStory": "Read Story",
+    "readTime": "{{count}} min read",
+    "writtenBy": "Written By",
+    "category": "Category:",
+    "neverMiss": "Never Miss A Beat",
+    "subscribeDesc": "Curated local stories delivered to your inbox every morning at 7:00 AM. Join 25,000+ neighbors.",
+    "signMeUp": "Sign Me Up",
+    "backHome": "Back to Home",
+    "noStories": "No stories found."
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "authenticate": "Authenticate",
+    "authDesc": "Sign in to access your account and dashboard.",
+    "createAccount": "Create Account",
+    "createAccountDesc": "Join the community to post stories and interact with neighbors.",
+    "emailLabel": "Email Address",
+    "passwordLabel": "Password",
+    "nameLabel": "Full Name",
+    "inviteLabel": "Invite Code (Optional)",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "joinHere": "Join Here",
+    "loginHere": "Login Here",
+    "sessionExpired": "Your session expired. Please sign in again.",
+    "invalidCredentials": "Invalid credentials. Please try again.",
+    "signOutVerify": "Signs out safely. See you soon!"
+  },
+  "dashboard": {
+    "welcomeBack": "Welcome back, {{name}}.",
+    "signOut": "Sign Out",
+    "signOutConfirm": "Are you sure you want to leave your session?",
+    "signOutMessage": "You'll need to log back in to manage articles.",
+    "roles": {
+      "admin": "Admin",
+      "author": "Author",
+      "reader": "Reader"
+    },
+    "readStories": "Read Stories",
+    "readStoriesDesc": "Browse the latest hyper-local news and community highlights.",
+    "browseFeed": "Browse Feed",
+    "writeArticle": "Write Article",
+    "writeArticleDesc": "Publish a new story to the platform and reach your community.",
+    "startWriting": "Start Writing",
+    "authorOnly": "Available to Authors & Admins only.",
+    "requiresInvite": "Requires Invite Code",
+    "issueInvite": "Issue Invite",
+    "issueInviteDesc": "Generate a one-time-use code to onboard a new Author.",
+    "inviteSuccess": "Invite code generated successfully!",
+    "generateCode": "Generate Code",
+    "expiresIn": "Expires in 7 days",
+    "yourProfile": "Your Profile",
+    "name": "Name",
+    "role": "Role",
+    "email": "Email"
+  },
+  "about": {
+    "title": "About Us",
+    "subtitle": "Hyper-Local News for a Modern Digital India",
+    "mission": "Our Mission",
+    "missionDesc": "To empower local communities by providing accurate, timely, and hyper-local news that directly impacts their daily lives.",
+    "story": "Our Story",
+    "storyContent": "LocalNewz was born out of a simple realization: while global news is everywhere, the stories that truly matter—the once happening in our neighborhoods, our markets, and our community centers—often go untold. We built this platform to give a voice to the local narrative, powered by a network of dedicated journalists and community contributors.",
+    "values": {
+      "integrity": "Integrity",
+      "integrityDesc": "We stick to the facts and maintain the highest ethical standards in journalism.",
+      "community": "Community",
+      "communityDesc": "We are driven by the needs and aspirations of the local people we serve.",
+      "accessibility": "Accessibility",
+      "accessibilityDesc": "Information should be free, clear, and available to everyone, regardless of language."
+    }
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Get in touch with our editorial team or support staff",
+    "form": {
+      "name": "Your Full Name",
+      "email": "Email Address",
+      "subject": "Subject",
+      "message": "Your Message",
+      "send": "Send Message",
+      "success": "Message sent successfully! We'll get back to you soon."
+    },
+    "office": {
+      "title": "Our Newsroom",
+      "address": "123, Media Square, Innovation District, New Delhi, India",
+      "phone": "+91 98765-43210"
+    },
+    "social": "Connect with us"
+  }
+}

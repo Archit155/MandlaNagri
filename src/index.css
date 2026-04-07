@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-border: var(--border);
+
+  --font-display: "Playfair Display", serif;
+  --font-body: "DM Sans", sans-serif;
+
+  --radius-card: 10px;
+  --radius-badge: 6px;
+  --radius-input: 6px;
+
+  --spacing-unit: 8px;
+
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  @keyframes toast-progress {
+    0% { width: 100%; }
+    100% { width: 0%; }
+  }
+}
+
+:root {
+  --bg: #ffffff;
+  --surface: #f8f7f5;
+  --text: #111111;
+  --muted: #6b6b6b;
+  --accent: #d42b2b;
+  --border: rgba(0,0,0,0.1);
+}
+
+.dark {
+  --bg: #0f0f0f;
+  --surface: #1a1a1a;
+  --text: #f0eeeb;
+  --muted: #9a9a9a;
+  --accent: #e84040;
+  --border: rgba(255,255,255,0.1);
+}
+
+@layer base {
+  body {
+    @apply bg-bg text-text font-body transition-colors duration-300;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display text-text italic;
+  }
+}
+
+@layer components {
+  .news-card-hover {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-xl;
+  }
+
+  .image-zoom-hover {
+    @apply transition-transform duration-500 hover:scale-105;
+  }
+
+  .ticker-marquee {
+    @apply flex whitespace-nowrap animate-[marquee_60s_linear_infinite];
+  }
+
+  .ticker-marquee:hover {
+    @apply [animation-play-state:paused];
+  }
+}

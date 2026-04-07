@@ -1,0 +1,5 @@
+[
+  "Test 1: PASS: Correctly rejected wrong invite code",
+  "Test 2: PASS: User blocked from posting article (403)",
+  "Test 3: PASS: Employee successfully posted an article"
+]
